@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            margin: 5px 0;
+        }
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: #0074cc;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Game</h1>
+        <div id="question-container">
+            <div class="question">
+                <span id="question-number"></span> <span id="question-text"></span>
+            </div>
+            <ul class="options" id="options-list">
+            </ul>
+        </div>
+        <button class="btn" id="next-button" onclick="nextQuestion()">Next</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                options: ["Paris", "London", "Berlin"],
+                answer: "Paris",
+            },
+            {
+                question: "What is the largest planet in our solar system?",
+                options: ["Earth", "Mars", "Jupiter"],
+                answer: "Jupiter",
+            },
+            {
+                question: "Which gas do plants absorb from the atmosphere?",
+                options: ["Oxygen", "Carbon Dioxide", "Nitrogen"],
+                answer: "Carbon Dioxide",
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                options: ["Au", "Ag", "Fe"],
+                answer: "Au",
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Venus", "Mars", "Jupiter"],
+                answer: "Mars",
+            },
+            {
+                question: "How many continents are there on Earth?",
+                options: ["4", "5", "7"],
+                answer: "7",
+            },
+            {
+                question: "Which gas makes up the majority of Earth's atmosphere?",
+                options: ["Oxygen", "Carbon Dioxide", "Nitrogen"],
+                answer: "Nitrogen",
+            },
+            {
+                question: "What is the largest mammal in the world?",
+                options: ["Elephant", "Giraffe", "Blue Whale"],
+                answer: "Blue Whale",
+            },
+            {
+                question: "What is the freezing point of water in Fahrenheit?",
+                options: ["32°F", "0°F", "100°F"],
+                answer: "32°F",
+            },
+            {
+                question: "What is the largest desert in the world?",
+                options: ["Sahara Desert", "Gobi Desert", "Antarctica"],
+                answer: "Antarctica",
+            },
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function displayQuestion() {
+            const questionNumber = currentQuestion + 1;
+            const questionText = questions[currentQuestion].question;
+            const options = questions[currentQuestion].options;
+
+            document.getElementById("question-number").textContent = `Question ${questionNumber}:`;
+            document.getElementById("question-text").textContent = questionText;
+
+            const optionsList = document.getElementById("options-list");
+            optionsList.innerHTML = "";
+
+            options.forEach((option, index) => {
+                const li = document.createElement("li");
+                const label = document.createElement("label");
+                const input = document.createElement("input");
+                input.type = "radio";
+                input.name = "answer";
+                input.value = option;
+
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(` ${option}`));
+                li.appendChild(label);
+                optionsList.appendChild(li);
+            });
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector("input[name='answer']:checked");
+
+            if (selectedOption) {
+                if (selectedOption.value === questions[currentQuestion].answer) {
+                    score++;
+                }
+
+                currentQuestion++;
+
+                if (currentQuestion < questions.length) {
+                    displayQuestion();
+                } else {
+                    // All questions answered, display the score
+                    document.getElementById("question-container").innerHTML = `<div class="question">Your Score: ${score} out of ${questions.length}</div>`;
+                    document.getElementById("next-button").style.display = "none";
+                }
+            } else {
+                alert("Please select an option before moving to the next question.");
+            }
+        }
+
+        // Initial question display
+        displayQuestion();
+    </script>
+</body>
+</html>
